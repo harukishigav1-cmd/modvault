@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ModVault — Download • Play • Enjoy</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/"><span class="brandmark">M</span><span>MOD<span class="accent">VAULT</span><small>DOWNLOAD • PLAY • ENJOY</small></span></a>
+  <nav><a href="/">Home</a><a href="#categories">Categories</a><a href="#mods">Mods</a><a class="navbutton" href="/login">Admin ↗</a></nav>
+</header>
+<section class="hero">
+  <div class="hero-copy"><p class="eyebrow">THE MODDING UNIVERSE</p>
+  <h1>LEVEL UP<br>YOUR <span>GAME.</span></h1>
+  <p class="hero-sub">Discover mods, skins, maps and game-changing upgrades, all in one vault.</p>
+  <a class="button" href="#mods">EXPLORE MODS <b>→</b></a>
+  <div class="hero-tags"><span>✦ CURATED MODS</span><span>✦ NEW DROPS</span><span>✦ GAMER BUILT</span></div></div>
+  <div class="hero-art"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="core">MV<span>✦</span></div><div class="float-tag tag-a">MODS / 001</div><div class="float-tag tag-b">UNLOCK YOUR GAME</div></div>
+</section>
+<main class="wrap">
+<section id="categories" class="section">
+ <div class="section-head"><div><p class="eyebrow">FIND YOUR NEXT UPGRADE</p><h2>Browse <span>Categories</span></h2></div><span class="section-count">07 COLLECTIONS</span></div>
+ <div class="category-grid">
+ {% for c in categories %}
+ <a class="category" href="/?category={{ c|urlencode }}#mods"><span class="cat-icon">{% if 'Android' in c %}◈{% elif 'Skins' in c %}◇{% elif 'Graphics' in c %}▧{% elif 'Gameplay' in c %}⚔{% elif 'Maps' in c %}⌖{% elif 'Minecraft' in c %}▦{% else %}✦{% endif %}</span><span>{{ c }}</span><b>↗</b></a>
+ {% endfor %}
+ </div>
+</section>
+<section id="mods" class="section">
+ <div class="section-head"><div><p class="eyebrow">THE COMMUNITY VAULT</p><h2>Explore <span>Mods</span></h2></div><span class="section-count">{{ mods|length }} RESULTS</span></div>
+ <form class="searchbar" action="/" method="get"><input name="q" value="{{ search }}" placeholder="Search mods, games, skins..."><button>SEARCH ↗</button></form>
+ <div class="filter-row"><a class="{{ 'selected' if selected == 'All' else '' }}" href="/#mods">All mods</a>{% for c in categories %}<a class="{{ 'selected' if selected == c else '' }}" href="/?category={{ c|urlencode }}#mods">{{ c }}</a>{% endfor %}</div>
+ <div class="mod-grid">
+ {% for m in mods %}
+ <article class="mod-card"><div class="mod-cover"><span class="cover-symbol">M<span>V</span></span><span class="cover-label">MODVAULT / FILE</span></div>
+ <div class="mod-info"><span class="pill">{{ m.category }}</span><h3>{{ m.name }}</h3><p>{{ m.description or 'No description provided.' }}</p>
+ <div class="mod-meta"><span>{{ (m.size_bytes / 1048576)|round(2) }} MB</span><span>↓ {{ m.downloads }} downloads</span></div>
+ <a class="download" href="{{ url_for('download', mod_id=m.id) }}">DOWNLOAD <b>↓</b></a></div></article>
+ {% else %}<div class="empty"><div>⌁</div><h3>Nothing in the vault yet</h3><p>Try another category or check back later.</p></div>{% endfor %}
+ </div>
+</section>
+<section class="stats"><div><strong>{{ total_mods }}</strong><span>AVAILABLE MODS</span></div><div><strong>{{ total_downloads }}</strong><span>TOTAL DOWNLOADS</span></div><div><strong>07</strong><span>MOD CATEGORIES</span></div></section>
+</main>
+<footer><a class="brand" href="/"><span class="brandmark">M</span><span>MOD<span class="accent">VAULT</span><small>DOWNLOAD • PLAY • ENJOY</small></span></a><span>© 2026 MODVAULT. SHARE THE LOVE, RESPECT THE CREATORS.</span><a href="/login">ADMIN LOGIN ↗</a></footer>
+</body></html>
